@@ -1,9 +1,19 @@
-import { Button } from "@/components/ui/button";
+import { Outlet } from "react-router-dom";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
 
-export default function Home() {
+function App() {
   return (
-    <div>
-      <Button variant="outline">Outline</Button>
-    </div>
+    <>
+      <div>
+        <Header />
+        {/* <div className="pt-20"> */}
+        <Outlet />
+        {/* </div> */}
+        <Footer />
+      </div>
+    </>
   );
 }
+
+export default App;

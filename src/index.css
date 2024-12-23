@@ -117,3 +117,32 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+@font-face {
+  font-family: 'Robotos'; /* Replace with your font's name */
+  src: url('src/assets/fonts/static/RobotoSlab-Regular.ttf') format('truetype');
+}
+
+.font-roboto-slab {
+  font-family: 'Roboto Slab', serif;
+}
+.font-pop {
+  font-family: "Poppins", serif;
+}
+.bricolage-grotesque {
+  font-family: "Bricolage Grotesque", serif;
+}
+
+::selection {
+  background-color: black;
+  color: white;
+}
+.link-dark::selection {
+  background-color: white;
+  color: black;
+}
+::-moz-selection {
+  background-color: black;
+  color: white;
+}
