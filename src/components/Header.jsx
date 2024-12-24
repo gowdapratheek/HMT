@@ -38,7 +38,11 @@ function Header() {
             className=" hover:text-gray-700 flex justify-center items-center link-dark"
             onClick={handleNavLinkClick}
           >
-            <img src="/hmt.png" alt="HMT Logo" className="h-14 rounded-md" />
+            <img
+              src="/HMT-logo.png"
+              alt="HMT Logo"
+              className="h-16 rounded-md"
+            />
           </NavLink>
         </div>
 
