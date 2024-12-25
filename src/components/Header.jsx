@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [isScrolled, setIsScrolled] = useState(false);
   const menuRef = useRef(null);
 
   const toggleMenu = (e) => {
@@ -18,223 +18,171 @@ function Header() {
   };
 
   useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
 
+    window.addEventListener("scroll", handleScroll);
     document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("click", handleClickOutside);
+    };
   }, []);
 
   return (
-    <header className="fixed top-[3%] right-[5%] w-[90%] mx-auto z-50 backdrop-blur-md rounded-xl border border-gray-200 font-bold font-roboto-slab ">
-      <div className="max-w-7xl mx-auto flex justify-between items-center p-2">
-        {/* Logo */}
-        <div className="flex items-center">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-[90vw] border border-gray-200 rounded-xl mx-auto mt-4
+        ${
+          isScrolled
+            ? "bg-white backdrop-blur-lg shadow-lg py-4"
+            : "bg-transparent py-4"
+        }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
           <NavLink
             to="/"
-            className=" hover:text-gray-700 flex justify-center items-center link-dark"
+            className="flex items-center"
             onClick={handleNavLinkClick}
           >
-            <img
-              src="/HMT-logo.png"
-              alt="HMT Logo"
-              className="h-16 rounded-md"
-            />
+            <img src="/hmt-con.png" alt="HMT Logo" className="h-12 w-auto" />
           </NavLink>
-        </div>
 
-        <svg
-          className="h-6 w-6 text-black cursor-pointer transition-colors duration-300 md:hidden scale-x-[-1]"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          onClick={toggleMenu}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h12M4 18h8"}
-          />
-        </svg>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex space-x-6 text-lg font-normal   tracking-wider">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `${isActive ? "text-black" : ""} hover:text-gray-700`
-            }
-            onClick={handleNavLinkClick}
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/gallery"
-            className={({ isActive }) =>
-              `${isActive ? "text-black" : ""} hover:text-gray-700`
-            }
-            onClick={handleNavLinkClick}
-          >
-            Our Gallery
-          </NavLink>
-          {["Services", "About", "Contact"].map((link, index) => (
-            <NavLink
-              key={index}
-              to={`/${link.toLowerCase().replace(/\s+/g, "")}`}
-              className={({ isActive }) =>
-                `${isActive ? "text-black" : ""} hover:text-gray-700`
-              }
-              onClick={handleNavLinkClick}
-            >
-              {link}
-            </NavLink>
-          ))}
-          {/* <div className="relative " ref={projectsDropdownRef}>
-            <button
-              onClick={toggleProjectsDropdown}
-              className=" hover:text-gray-700 flex items-center "
-            >
-              Projects
-              <IoIosArrowDown
-                className={`ml-1 transition-transform duration-300 ${
-                  isProjectsOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-            {isProjectsOpen && (
-              <div className="absolute bg-[#faf7f5] text-black shadow-lg mt-2 rounded-lg">
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-8 text-lg">
+            {["Home", "Services", "Projects", "About", "Contact"].map(
+              (link) => (
                 <NavLink
-                  to="/residential"
-                  className="block py-3 px-6 rounded-lg"
-                >
-                  Residential
-                </NavLink>
-                <NavLink
-                  to="/government"
-                  className="block py-3 px-6 rounded-lg"
-                >
-                  Government
-                </NavLink>
-              </div>
-            )}
-          </div> */}
-        </nav>
-
-        {/* Social Media Icons */}
-        <div className="hidden md:flex space-x-4">
-          {[
-            {
-              href: "https://www.instagram.com/hmt_hassan/",
-              icon: FaInstagram,
-            },
-            { href: "https://facebook.com", icon: FaFacebookF },
-            { href: "https://wa.me/7259963334?text=Hello", icon: FaWhatsapp },
-          ].map(({ href, icon: Icon }, index) => (
-            <a
-              key={index}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className=" hover:text-gray-700 transition-transform duration-300 transform hover:scale-110 hover:rotate-3"
-            >
-              <Icon size={26} />
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isOpen && (
-        <nav
-          ref={menuRef}
-          className="lg:hidden mt-2 rounded-lg shadow-lg transition-transform duration-1000 text-center space-y-4 font-normal text-xl  tracking-wider"
-          style={{ fontFamily: "Poppins, serif" }}
-        >
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `${isActive ? "text-black" : ""} hover:text-gray-700 `
-            }
-            onClick={handleNavLinkClick}
-          >
-            Home
-          </NavLink>
-          {["Our Gallery", "Services", "About", "Contact"].map(
-            (link, index) => (
-              <NavLink
-                key={index}
-                to={`/${link.toLowerCase().replace(/\s+/g, "")}`}
-                className={({ isActive }) =>
-                  `block px-4 py-2 ${isActive ? "text-black" : ""}`
-                }
-                onClick={handleNavLinkClick}
-              >
-                {link}
-              </NavLink>
-            )
-          )}
-          {/* <div className="relative w-full " ref={projectsDropdownRef}>
-            <div className="w-full flex justify-center items-center">
-              <button
-                onClick={toggleProjectsDropdown}
-                className=" hover:text-gray-700 flex items-center  tracking-wider"
-              >
-                Projects
-                <IoIosArrowDown
-                  className={`ml-1 transition-transform duration-300 ${
-                    isProjectsOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-            </div>
-            {isProjectsOpen && (
-              <div className="relative left-1/2 transform -translate-x-1/2 shadow-lg mt-2 rounded-lg bg-black/40">
-                <NavLink
-                  to="/residential"
-                  className="block py-4 px-6 rounded-lg  hover:text-gray-700"
+                  key={link}
+                  to={link === "Home" ? "/" : `/${link.toLowerCase()}`}
+                  className={({ isActive }) =>
+                    `text-base font-medium transition-colors duration-200
+                  ${isActive ? "text-black" : "text-gray-600 hover:text-black"}`
+                  }
                   onClick={handleNavLinkClick}
                 >
-                  Residential
+                  {link}
                 </NavLink>
-                <NavLink
-                  to="/government"
-                  className="block py-4 px-6 rounded-lg  hover:text-gray-700"
-                  onClick={handleNavLinkClick}
-                >
-                  Government
-                </NavLink>
-              </div>
+              )
             )}
-          </div> */}
-          <div className="flex md:hidden justify-evenly w-full text-center p-6">
+          </nav>
+
+          {/* Social Media Icons - Desktop */}
+          <div className="hidden md:flex items-center space-x-4">
             {[
               {
                 href: "https://www.instagram.com/hmt_hassan/",
                 icon: FaInstagram,
+                label: "Instagram",
               },
-              { href: "https://facebook.com", icon: FaFacebookF },
               {
-                href: "https://wa.me/7259963334?text=Hello",
-                icon: FaWhatsapp,
+                href: "https://facebook.com",
+                icon: FaFacebookF,
+                label: "Facebook",
               },
-            ].map(({ href, icon: Icon }, index) => (
+              {
+                href: "https://wa.me/8660620326?text=Hello",
+                icon: FaWhatsapp,
+                label: "WhatsApp",
+              },
+            ].map(({ href, icon: Icon, label }) => (
               <a
-                key={index}
+                key={label}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className=" text-black hover:"
+                aria-label={label}
+                className="p-2 text-gray-600 hover:text-black transition-colors duration-200"
               >
-                <Icon size={26} />
+                <Icon size={24} />
               </a>
             ))}
           </div>
-        </nav>
-      )}
+
+          {/* Mobile Menu Button */}
+          <button
+            className="lg:hidden p-2 rounded-lg text-gray-600 hover:text-black"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
+            <svg
+              className="w-6 h-6 scale-x-[-1]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h12M4 18h8"}
+              />
+            </svg>
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div
+            ref={menuRef}
+            className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 px-4"
+          >
+            <nav className="flex flex-col space-y-4 justify-center items-center w-full">
+              {["Home", "Services", "Projects", "About", "Contact"].map(
+                (link) => (
+                  <NavLink
+                    key={link}
+                    to={link === "Home" ? "/" : `/${link.toLowerCase()}`}
+                    className={({ isActive }) =>
+                      `text-base font-medium transition-colors duration-200 py-2
+                    ${
+                      isActive ? "text-black" : "text-gray-600 hover:text-black"
+                    }`
+                    }
+                    onClick={handleNavLinkClick}
+                  >
+                    {link}
+                  </NavLink>
+                )
+              )}
+
+              {/* Social Media Icons - Mobile */}
+              <div className="flex justify-center space-x-6 pt-4 border-t">
+                {[
+                  {
+                    href: "https://www.instagram.com/hmt_hassan/",
+                    icon: FaInstagram,
+                  },
+                  { href: "https://facebook.com", icon: FaFacebookF },
+                  {
+                    href: "https://wa.me/8660620326?text=Hello",
+                    icon: FaWhatsapp,
+                  },
+                ].map(({ href, icon: Icon }, index) => (
+                  <a
+                    key={index}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-600 hover:text-black transition-colors duration-200"
+                  >
+                    <Icon size={26} />
+                  </a>
+                ))}
+              </div>
+            </nav>
+          </div>
+        )}
+      </div>
     </header>
   );
 }
