@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
-import { FaInstagram, FaFacebookF, FaWhatsapp } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { FaRegEnvelope } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
 
 function Header() {
@@ -85,9 +86,9 @@ function Header() {
                 label: "Instagram",
               },
               {
-                href: "https://facebook.com",
-                icon: FaFacebookF,
-                label: "Facebook",
+                href: "mailto:contact@hmtconstructions.com",
+                icon: FaRegEnvelope,
+                label: "Email",
               },
               {
                 href: "https://wa.me/8660620326?text=Hello",
@@ -98,7 +99,7 @@ function Header() {
               <a
                 key={label}
                 href={href}
-                target="_blank"
+                target={href.startsWith("mailto") ? "_self" : "_blank"}
                 rel="noopener noreferrer"
                 aria-label={label}
                 className="p-2 text-gray-600 hover:text-black transition-colors duration-200"
@@ -161,18 +162,25 @@ function Header() {
                   {
                     href: "https://www.instagram.com/hmt_hassan/",
                     icon: FaInstagram,
+                    label: "Instagram",
                   },
-                  { href: "https://facebook.com", icon: FaFacebookF },
+                  {
+                    href: "mailto:contact@hmtconstructions.com",
+                    icon: FaRegEnvelope,
+                    label: "Email",
+                  },
                   {
                     href: "https://wa.me/8660620326?text=Hello",
                     icon: FaWhatsapp,
+                    label: "WhatsApp",
                   },
-                ].map(({ href, icon: Icon }, index) => (
+                ].map(({ href, icon: Icon, label }) => (
                   <a
-                    key={index}
+                    key={label}
                     href={href}
-                    target="_blank"
+                    target={href.startsWith("mailto") ? "_self" : "_blank"}
                     rel="noopener noreferrer"
+                    aria-label={label}
                     className="text-gray-600 hover:text-black transition-colors duration-200"
                   >
                     <Icon size={26} />

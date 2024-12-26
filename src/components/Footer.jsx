@@ -1,11 +1,11 @@
 import {
   FaInstagram,
-  FaFacebookF,
   FaWhatsapp,
   FaMapMarkerAlt,
   FaPhoneAlt,
   FaEnvelope,
 } from "react-icons/fa";
+import { FaRegEnvelope } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -25,7 +25,10 @@ const Footer = () => {
                   href: "https://www.instagram.com/hmt_hassan/",
                   icon: FaInstagram,
                 },
-                { href: "https://facebook.com", icon: FaFacebookF },
+                {
+                  href: "mailto:contact@hmtconstructions.com",
+                  icon: FaRegEnvelope,
+                },
                 {
                   href: "https://wa.me/8660620326?text=Hello",
                   icon: FaWhatsapp,
@@ -34,7 +37,7 @@ const Footer = () => {
                 <a
                   key={index}
                   href={href}
-                  target="_blank"
+                  target={href.startsWith("mailto") ? "_self" : "_blank"}
                   rel="noopener noreferrer"
                   className="bg-gray-100 p-2 rounded-lg hover:bg-gray-200 transition-colors duration-300 text-gray-600"
                 >

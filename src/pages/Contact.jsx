@@ -112,7 +112,7 @@ function ContactUs() {
         </div>
       </div>
 
-      <div className=" w-[95vw] flex flex-col items-center justify-center mb-8">
+      {/* <div className=" w-[95vw] flex flex-col items-center justify-center mb-8">
         <h2 className="text-center text-3xl lg:text-4xl font-semibold underline font-roboto-slab">
           Locate Us
         </h2>
@@ -122,7 +122,7 @@ function ContactUs() {
         className="p-6 bg-black text-white hover:bg-gray-900  rounded py-3 transition duration-300 w-fit mb-8 "
       >
         <a href="https://maps.app.goo.gl/3c2SxUsXLWdDjqFo9" target="_blank">Click here to view on maps</a>
-      </button>
+      </button> */}
     </div>
   );
 }
